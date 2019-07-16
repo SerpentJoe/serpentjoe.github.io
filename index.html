@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dev Mishra: Possible Lizard Person?</title>
+  <meta charset="utf-8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="node_modules/reveal.js/css/reset.css">
+  <link rel="stylesheet" href="node_modules/reveal.js/css/reveal.css">
+  <link rel="stylesheet" href="node_modules/reveal.js/css/theme/black.css" id="theme">
+</head>
+<body>
+
+  <script src="node_modules/reveal.js/js/reveal.js"></script>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <section>
+        <h1>Dev Mishra</h1>
+        <h3>A Story Of Meeting The Minimum Requirements For Marriage</h3>
+      </section>
+
+      <section>
+        <h1>Thanks!</h1>
+        <p>
+          Dev, Zanoon, Families, Groomsmen, Bridesmaids, ...
+        </p>
+      </section>
+
+      <section>
+        <h1>Who Is Dev?</h1>
+
+        <style>
+          .devIdentityContainer {
+            width: 48.60vh;
+            height: 50vh;
+            position: relative;
+            background: url(img/mixing-liquids.jpg);
+            background-size: contain;
+            margin: 0 auto;
+          }
+          .devIdentityContainer > .devIdentityContent {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url(img/faces.png);
+            background-size: contain;
+          }
+        </style>
+        <div class="fragment devIdentityContainer">
+          <div class="fragment devIdentityContent"></div>
+        </div>
+      </section>
+
+      <section>
+        <h1>Chapter One: DJ</h1>
+        <img src="img/rpi.jpg">
+      </section>
+
+      <section id="devAimSlide">
+        <h1>First Contact</h1>
+
+        <style>
+          .devAimContainer {
+            color: black;
+            font-family: "Times New Roman", Times, serif;
+            font-size: .5em;
+          }
+          .devAimContainer > .devAimConversation {
+            margin: 0 auto;
+            position: relative;
+            width: 430px;
+            height: 371px;
+            background: url(img/aimBackground.png);
+          }
+          .devAimContainer > .devAimConversation > .devAimMessages {
+            --VERTICAL-MARGIN: .25em;
+            position: relative;
+            top: 42px;
+            left: 7px;
+            width: 402px;
+            height: 208px;
+            list-style: none;
+            display: flex;
+            flex-flow: column nowrap;
+            padding: calc(-1 * var(--VERTICAL-MARGIN)) .5em .5em;
+            box-sizing: border-box;
+            overflow: hidden;
+            margin: 0;
+          }
+          .devAimContainer > .devAimConversation > .devAimMessages > li {
+            margin-top: var(--VERTICAL-MARGIN);
+          }
+          .devAimContainer > .devAimConversation > .devAimMessages > li.pending {
+            margin-top: 0;
+            display: none;
+          }
+        </style>
+
+        <div id="devAimContainer" class="devAimContainer fragment">
+          <article id="devAimConversation" class="devAimConversation">
+            <ol id="devAimMessages" class="devAimMessages"></ol>
+          </article>
+        </div>
+
+        <script>(async () => {
+          // Configuration
+          const chatters = {
+            dev: { name: 'Bull5296:', color: 'blue' },
+            me: { name: 'Indiana Jonze:', color: 'red' },
+            devSignedOff: { name: 'Bull5296 has signed off.', color: 'black' },
+            devNotAvailable: { name: 'Bull5296 did not receive your message.', color: 'black' },
+          };
+          const messages = [
+            { chatter: 'dev', delay: 2e3, text: `hey` },
+            { chatter: 'me', delay: 4e3, text: `hey! What's up?` },
+            { chatter: 'me', delay: 3e3, text: `getting excited for move-in day?` },
+            { chatter: 'dev', delay: 8e3, text: `definitely` },
+            { chatter: 'dev', delay: 2e3, text: `sorry, hang on` },
+            { chatter: 'dev', delay: 3e3, text: `at a family function. There's some kids around being annoying` },
+            { chatter: 'me', delay: 5e3, text: `guess you'll have to hit em! haha` },
+            { chatter: 'dev', delay: 3e3, text: `right?` },
+            { chatter: 'dev', delay: 2e3, text: `brb one sec` },
+            { chatter: 'dev', delay: 8e3, text: `that kind of worked ... but he's crying now. i gotta go` },
+            { chatter: 'devSignedOff', delay: 2e3, text: `` },
+            { chatter: 'me', delay: 5e3, text: `... cool man` },
+            { chatter: 'devNotAvailable', delay: 500, text: `` },
+            { chatter: 'me', delay: 5e3, text: `:(` },
+            { chatter: 'devNotAvailable', delay: 500, text: `` },
+          ];
+
+          // Create the dom nodes
+          const ol = document.querySelector('#devAimMessages');
+          {
+            let totalDelay = 0;
+            for (const message of messages) {
+              const { chatter, delay, text } = message;
+              const { name, color } = chatters[chatter];
+
+              const li = document.createElement('li');
+              li.classList.add('pending');
+
+              const chatterEl = document.createElement('span');
+              Object.assign(chatterEl.style, { color, fontWeight: 'bold' });
+              chatterEl.textContent = `${name}`;
+              li.appendChild(chatterEl);
+
+              li.appendChild(document.createTextNode(' '));
+
+              const msgEl = document.createElement('span');
+              msgEl.textContent = text;
+              li.appendChild(msgEl);
+
+              ol.appendChild(li);
+
+              totalDelay += delay;
+              Object.assign(message, { totalDelay, li });
+            }
+          }
+
+          // Utilities for pausing and unpausing time
+          const {
+            nextFrame,
+            pause,
+            unpause,
+          } = (() => {
+            const queue = [];
+            let paused = true;
+            window.toSubtract = 0;
+            window.currentRawTime = 0;
+            requestAnimationFrame(function updateRawTime(value) {
+              currentRawTime = value;
+              requestAnimationFrame(updateRawTime);
+            });
+            const attemptFlushQueue = () => {
+              requestAnimationFrame((currentRawTime) => {
+                if (paused) {
+                  return;
+                }
+                const time = currentRawTime - toSubtract;
+                for (const callback of queue.splice(0, queue.length)) {
+                  callback(time);
+                }
+              });
+            };
+
+            return {
+              nextFrame: () => new Promise(resolve => {
+                queue.push(resolve);
+                attemptFlushQueue();
+              }),
+              pause: () => {
+                if (paused) return;
+                paused = true;
+                toSubtract -= currentRawTime;
+              },
+              unpause: () => {
+                if (!paused) return;
+                paused = false;
+                toSubtract += currentRawTime;
+
+                attemptFlushQueue();
+              },
+            };
+          })();
+
+          // Pause and unpause when hiding and showing
+          Reveal.addEventListener('fragmentshown', ({ fragment }) => {
+            if (fragment === devAimContainer) {
+              unpause();
+            }
+          });
+          Reveal.addEventListener('fragmenthidden', ({ fragment }) => {
+            if (fragment === devAimContainer) {
+              pause();
+            }
+          });
+          Reveal.addEventListener('slidechanged', ({ previousSlide }) => {
+            if (previousSlide === devAimSlide) {
+              pause();
+            }
+          });
+
+          // Tick forward in time, showing messages
+          const numMessages = messages.length;
+          for (let time, nextMessageIndex=0; time=await nextFrame(); nextMessageIndex<numMessages) {
+            let didAddMessage = false;
+            while (nextMessageIndex < numMessages) {
+              const { totalDelay, li } = messages[nextMessageIndex];
+              if (time >= totalDelay) {
+                nextMessageIndex++;
+                li.classList.remove('pending');
+                didAddMessage = true;
+              } else {
+                break;
+              }
+            }
+            if (didAddMessage) {
+              ol.scroll({
+                top: 99999,
+                behavior: 'smooth',
+              });
+            }
+          }
+
+          //# sourceURL=devAimMain.js
+        })()</script>
+      </section>
+
+      <section>
+        <img src="img/painting.jpg">
+      </section>
+
+      <section>
+        <section>
+          <h1>Dev's Dates!</h1>
+        </section>
+
+        <section>
+          <h1 class="fragment">Peter's Dates</h1>
+          <div style="height:50vh"></div>
+        </section>
+      </section>
+
+      <section>
+        <h1>Chapter Two: Devjeet</h1>
+        <img style="height:40vh" src="img/parkPlaza.png">
+      </section>
+
+      <section>
+        <img src="img/pullUpBar.jpg">
+      </section>
+
+      <section>
+        <h1>HDFM</h1>
+      </section>
+
+      <section>
+        <h1>Eggs</h1>
+      </section>
+
+    </div>
+  </div>
+
+  <script>
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      center: true,
+      hash: true,
+
+      transition: 'slide', // none/fade/slide/convex/concave/zoom
+    });
+  </script>
+
+</body>
+</html>
