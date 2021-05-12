@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "reveal.js": "^3.8.0"
+    "reveal.js": "^3.9.2"
   }
 }
